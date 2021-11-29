@@ -3,6 +3,7 @@ const { selectCategories } = require("../models/categories.models");
 exports.fetchCategories = async (req, res, next) => {
   try {
     const categories = await selectCategories();
+    console.log(categories);
     res.status(200).send({ categories });
   } catch (err) {
     next(err);
