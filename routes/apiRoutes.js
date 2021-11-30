@@ -5,7 +5,11 @@ const commentsRouter = require("./comments.routes");
 const reviewsRouter = require("./reviews.routes");
 const usersRouter = require("./users.routes");
 
+const { getDocumentation } = require("../controllers/api.controller");
+
 const apiRouter = express.Router();
+
+apiRouter.use("/", getDocumentation);
 
 apiRouter.use("/categories", categoriesRouter);
 apiRouter.use("/reviews", reviewsRouter);
