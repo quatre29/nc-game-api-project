@@ -4,14 +4,25 @@ const {
   getAllReviews,
 } = require("../models/reviews.models");
 
+const { checkIfRowExists } = require("../utils/check");
+
+//-------------------------------------------------------------
+
 exports.fetchReviews = async (req, res, next) => {
+  const queryParams = req.query;
+  const sort_by = queryParams["sort_by"];
+  const sort_order = queryParams["order"];
+  const category = queryParams["category"];
+
   try {
-    const reviews = await getAllReviews();
+    const reviews = await getAllReviews(sort_by, sort_order, category);
     res.status(200).send({ reviews });
   } catch (err) {
     next(err);
   }
 };
+
+//-------------------------------------------------------------
 
 exports.fetchReviewById = async (req, res, next) => {
   try {
@@ -25,10 +36,14 @@ exports.fetchReviewById = async (req, res, next) => {
   }
 };
 
+//-------------------------------------------------------------
+
 exports.updateReview = async (req, res, next) => {
   try {
     const { inc_votes } = req.body;
     const { review_id } = req.params;
+
+    await checkIfRowExists(review_id, "reviews");
 
     const review = await patchReview(inc_votes, review_id);
     res.status(201).send({ review });
@@ -36,6 +51,8 @@ exports.updateReview = async (req, res, next) => {
     next(err);
   }
 };
+
+//-------------------------------------------------------------
 
 // exports.funcNme = async (req, res, next) => {
 //     try {

@@ -10,8 +10,10 @@
 
 -- SELECT reviews.owner, review_id FROM reviews;
 
-SELECT reviews.*, COUNT (comments.review_id) AS comment_count 
-FROM reviews 
-LEFT JOIN comments ON comments.review_id = reviews.review_id
-WHERE reviews.review_id = comments.review_id
-GROUP BY reviews.review_id;
+-- SELECT reviews.*, COUNT (comments.review_id) AS comment_count 
+-- FROM reviews 
+-- LEFT JOIN comments ON comments.review_id = reviews.review_id
+-- -- WHERE reviews.review_id = comments.review_id
+-- GROUP BY reviews.review_id;
+
+SELECT * FROM comments;
