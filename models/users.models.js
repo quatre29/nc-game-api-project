@@ -25,7 +25,6 @@ exports.selectUser = async (username) => {
     [username]
   );
 
-  console.log(user.rows, "<<<<<<<<<<<<<<<<<<<<<<<<<");
   return user.rows[0];
 };
 

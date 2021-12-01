@@ -2,6 +2,7 @@ const {
   selectCommentsByReviewId,
   insertComment,
   deleteComment,
+  patchComment,
 } = require("../models/comments.models");
 const { checkIfRowExists } = require("../utils/check");
 
@@ -43,6 +44,21 @@ exports.removeComment = async (req, res, next) => {
     await deleteComment(comment_id);
 
     res.status(204).json({ msg: "no content" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//-------------------------------------------------------------
+
+exports.voteComment = async (req, res, next) => {
+  try {
+    const { inc_votes } = req.body;
+    const { comment_id } = req.params;
+    await checkIfRowExists(comment_id, "comments");
+
+    const comment = await patchComment(inc_votes, comment_id);
+    res.status(200).send({ comment });
   } catch (err) {
     next(err);
   }

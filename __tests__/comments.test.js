@@ -113,3 +113,58 @@ describe("DEL /api/comments/:comment_id", () => {
 });
 
 //-------------------------------------------------------------
+
+describe("PATCH /api/comments/:comments_id", () => {
+  it("201: updates comments votes by increasing number", () => {
+    const body = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/comments/2")
+      .send(body)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comment).toEqual(
+          expect.objectContaining({
+            votes: 18,
+          })
+        );
+      });
+  });
+
+  it("201: updates comment votes by decrementing number", () => {
+    const body = { inc_votes: -100 };
+    return request(app)
+      .patch("/api/comments/2")
+      .send(body)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comment).toEqual(
+          expect.objectContaining({
+            votes: -87,
+          })
+        );
+      });
+  });
+
+  it("400: increment with something else than a number", () => {
+    const body = { inc_votes: "s" };
+    return request(app)
+      .patch("/api/comments/s")
+      .send(body)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+  it("404: when comment_id is not found", () => {
+    const body = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/comments/2222")
+      .send(body)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found!");
+      });
+  });
+});
+
+//-------------------------------------------------------------

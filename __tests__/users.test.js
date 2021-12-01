@@ -43,6 +43,7 @@ describe("GET /api/users/:username", () => {
 
   it("404: user not found ", async () => {
     const { body } = await request(app).get("/api/users/quatre29").expect(404);
+    expect(body.msg).toBe("Not found!");
     expect(body.user).toBe(undefined);
   });
 });
