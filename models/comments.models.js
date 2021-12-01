@@ -4,13 +4,14 @@ const { rejectQuery } = require("../utils/query");
 
 //-------------------------------------------------------------
 
-exports.selectCommentsByReviewId = async (review_id) => {
+exports.selectCommentsByReviewId = async (review_id, page = 1, limit = 10) => {
   const comments = await db.query(
     `
     SELECT * FROM comments
     WHERE review_id = $1
+    LIMIT $3 OFFSET(($2 - 1) * $3)
   `,
-    [review_id]
+    [review_id, page, limit]
   );
   return comments.rows;
 };

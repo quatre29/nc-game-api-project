@@ -10,11 +10,16 @@ const { checkIfRowExists } = require("../utils/check");
 
 exports.getCommentsByReview = async (req, res, next) => {
   const { review_id } = req.params;
+
+  const queryParams = req.query;
+  const page = queryParams["page"];
+  const limit = queryParams["limit"];
+
   try {
     await checkIfRowExists(review_id, "reviews");
-    const comments = await selectCommentsByReviewId(review_id);
+    const comments = await selectCommentsByReviewId(review_id, page, limit);
 
-    res.status(200).send({ comments });
+    res.status(200).send({ comments, total_count: 0 });
   } catch (err) {
     next(err);
   }
@@ -52,9 +57,10 @@ exports.removeComment = async (req, res, next) => {
 //-------------------------------------------------------------
 
 exports.voteComment = async (req, res, next) => {
+  const { inc_votes } = req.body;
+  const { comment_id } = req.params;
+
   try {
-    const { inc_votes } = req.body;
-    const { comment_id } = req.params;
     await checkIfRowExists(comment_id, "comments");
 
     const comment = await patchComment(inc_votes, comment_id);

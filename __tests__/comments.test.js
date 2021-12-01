@@ -35,6 +35,15 @@ describe("GET /api/reviews/:review_id/comments", () => {
 
     expect(body.msg).toBe("Invalid input");
   });
+
+  it("200: with pagination and limitation query", async () => {
+    const { body } = await request(app).get(
+      "/api/reviews/3/comments?page=2&limit=1"
+    );
+    expect(body.comments).toBeInstanceOf(Array);
+    expect(body.comments).toHaveLength(1);
+    expect(body.comments[0].body).toBe("I didn't know dogs could play games");
+  });
 });
 
 //-------------------------------------------------------------

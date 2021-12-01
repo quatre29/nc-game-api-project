@@ -148,6 +148,15 @@ describe("GET /api/reviews", () => {
     expect(arr).toBe(true);
   });
 
+  it("200: with pagination and limitation query", async () => {
+    const { body } = await request(app).get("/api/reviews?page=2&limit=3");
+    expect(body.reviews).toBeInstanceOf(Array);
+    expect(body.reviews).toHaveLength(3);
+    expect(body.reviews[0].votes).toBe(10);
+    expect(body.reviews[1].votes).toBe(10);
+    expect(body.reviews[2].votes).toBe(5);
+  });
+
   it("400: when requesting with query that doesn't exist", async () => {
     const { body } = await request(app)
       .get("/api/reviews?sort_by=lol")

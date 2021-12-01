@@ -24,7 +24,7 @@ exports.fetchReviews = async (req, res, next) => {
       page,
       limit
     );
-    res.status(200).send({ reviews });
+    res.status(200).send({ reviews, total_count: 0 });
   } catch (err) {
     next(err);
   }
