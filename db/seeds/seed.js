@@ -41,7 +41,7 @@ const seed = async ({ categoryData, commentData, reviewData, userData }) => {
     CREATE TABLE comments (
       comment_id SERIAL PRIMARY KEY,
       author VARCHAR(30) REFERENCES users(username) NOT NULL,
-      review_id INT REFERENCES reviews(review_id) NOT NULL,
+      review_id INT REFERENCES reviews(review_id) ON DELETE CASCADE NOT NULL,
       votes INT DEFAULT 0,
       created_at TIMESTAMP NOT NULL,
       body TEXT

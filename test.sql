@@ -16,4 +16,4 @@
 -- -- WHERE reviews.review_id = comments.review_id
 -- GROUP BY reviews.review_id;
 
-SELECT * FROM categories;
+SELECT title, review_id FROM reviews;

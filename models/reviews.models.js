@@ -146,4 +146,14 @@ exports.insertReview = async (body) => {
 
 //-------------------------------------------------------------
 
-exports.deleteReview = async (review_id) => {};
+exports.deleteReview = async (review_id) => {
+  const delRev = await db.query(
+    `
+    DELETE FROM reviews
+    WHERE review_id = $1
+  `,
+    [review_id]
+  );
+
+  return delRev.rows;
+};

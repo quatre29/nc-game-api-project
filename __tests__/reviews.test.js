@@ -269,6 +269,21 @@ describe("POST /api/reviews", () => {
 
 //-------------------------------------------------------------
 
-describe("DELETE /api/reviews", () => {});
+describe("DELETE /api/reviews/:review_id", () => {
+  it("204: when deleting a review", async () => {
+    const { body } = await request(app).delete("/api/reviews/3").expect(204);
+    // expect(body.msg).toBe("review deleted!");
+  });
+
+  it("404: when deleting a review that doesn't exist", async () => {
+    const { body } = await request(app).delete("/api/reviews/2222").expect(404);
+    expect(body.msg).toBe("review doesn't exist!");
+  });
+
+  it("400: when deleting a review with wrong input", async () => {
+    const { body } = await request(app).delete("/api/reviews/sssf").expect(400);
+    expect(body.msg).toBe("Invalid input");
+  });
+});
 
 //-------------------------------------------------------------

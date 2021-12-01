@@ -67,7 +67,6 @@ exports.updateReview = async (req, res, next) => {
 exports.postReview = async (req, res, next) => {
   try {
     const review = await insertReview(req.body);
-    console.log(review, "<<<<");
     res.status(201).send({ review });
   } catch (err) {
     next(err);
@@ -78,11 +77,11 @@ exports.postReview = async (req, res, next) => {
 
 exports.removeReview = async (req, res, next) => {
   const { review_id } = req.params;
-
   try {
+    await checkIfRowExists(review_id, "reviews", "review doesn't exist!");
     await deleteReview(review_id);
 
-    res.status(204).json({ msg: "review deleted!" });
+    res.sendStatus(204);
   } catch (err) {
     next(err);
   }
