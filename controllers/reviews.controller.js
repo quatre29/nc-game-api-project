@@ -13,9 +13,17 @@ exports.fetchReviews = async (req, res, next) => {
   const sort_by = queryParams["sort_by"];
   const sort_order = queryParams["order"];
   const category = queryParams["category"];
+  const page = queryParams["page"];
+  const limit = queryParams["limit"];
 
   try {
-    const reviews = await getAllReviews(sort_by, sort_order, category);
+    const reviews = await getAllReviews(
+      sort_by,
+      sort_order,
+      category,
+      page,
+      limit
+    );
     res.status(200).send({ reviews });
   } catch (err) {
     next(err);

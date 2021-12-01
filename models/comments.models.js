@@ -70,7 +70,5 @@ exports.patchComment = async (inc_votes, comment_id) => {
     [inc_votes, comment_id]
   );
 
-  console.log(comment.rows, "<<<<<<<<<<<<");
-
   return comment.rows[0];
 };

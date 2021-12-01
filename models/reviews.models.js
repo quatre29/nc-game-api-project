@@ -6,7 +6,9 @@ const { rejectQuery } = require("../utils/query");
 exports.getAllReviews = async (
   sort_by = "date",
   sort_order = "descending",
-  category
+  category,
+  page = 1,
+  limit = 10
 ) => {
   let sort_criteria = "";
   let sort_order_criteria = "";
@@ -16,6 +18,7 @@ exports.getAllReviews = async (
     LEFT JOIN comments ON comments.review_id = reviews.review_id
   `;
   let group_by = "GROUP BY reviews.review_id";
+  let pagination = "LIMIT $2 OFFSET(($1 - 1) * $2)";
 
   switch (sort_by) {
     case "date":
@@ -62,9 +65,12 @@ exports.getAllReviews = async (
     if (reviews.rows.length === 0)
       return Promise.reject({ status: 404, msg: "Not found!" });
   } else {
-    reviews = await db.query(`
-      ${query_string} ${group_by} ${sort_criteria} ${sort_order_criteria};
-  `);
+    reviews = await db.query(
+      `
+      ${query_string} ${group_by} ${sort_criteria} ${sort_order_criteria} ${pagination};
+  `,
+      [page, limit]
+    );
   }
 
   return reviews.rows;
