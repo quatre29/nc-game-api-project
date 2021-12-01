@@ -112,11 +112,19 @@ exports.patchReview = async (inc_votes, review_id) => {
 //-------------------------------------------------------------
 
 exports.insertReview = async (body) => {
-  await checkIfRowExists(
+  const checkUser = await checkIfRowExists(
     body.owner,
     "users",
-    `user ${body.owner} does not exist, please register!`
+    `user '${body.owner}' does not exist, please register!`
   );
+
+  const checkCategory = await checkIfRowExists(
+    body.category,
+    "categories",
+    `category '${body.category}' does not exist, please choose the correct one!`
+  );
+
+  Promise.all([checkUser, checkCategory]);
 
   const review = await db.query(
     `
@@ -128,7 +136,7 @@ exports.insertReview = async (body) => {
     (
       $1, $2, $3, $4, $5
     )
-    RETURNING *;
+    RETURNING review_id, votes, created_at;
   `,
     [body.owner, body.title, body.review_body, body.designer, body.category]
   );

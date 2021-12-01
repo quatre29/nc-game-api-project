@@ -221,16 +221,13 @@ describe("POST /api/reviews", () => {
       .send(reviewBody)
       .expect(201);
 
-    console.log(body, "test");
-
-    // expect(body.review).toEqual(
-    //   expect.objectContaining({
-    //     review_id: expect.any(Number),
-    //     votes: 0,
-    //     created_at: expect.any(Date),
-    //     comment_count: 0,
-    //   })
-    // );
+    expect(body.review).toEqual(
+      expect.objectContaining({
+        review_id: expect.any(Number),
+        votes: 0,
+        created_at: expect.any(String),
+      })
+    );
   });
 
   it("404: when creating a new review with user that not exists", async () => {
@@ -247,6 +244,25 @@ describe("POST /api/reviews", () => {
       .send(reviewBody)
       .expect(404);
 
-    expect(body.msg).toBe("User quatre29 does not exist, please register!");
+    expect(body.msg).toBe("user 'quatre29' does not exist, please register!");
+  });
+
+  it("404: when creating a new review with a category that doesn't exists", async () => {
+    const reviewBody = {
+      owner: "dav3rid",
+      title: "Awesome game",
+      review_body:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+      designer: "Akihisa Okui",
+      category: "fake category",
+    };
+    const { body } = await request(app)
+      .post("/api/reviews")
+      .send(reviewBody)
+      .expect(404);
+
+    expect(body.msg).toBe(
+      "category 'fake category' does not exist, please choose the correct one!"
+    );
   });
 });

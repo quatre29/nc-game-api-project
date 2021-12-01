@@ -66,6 +66,7 @@ exports.updateReview = async (req, res, next) => {
 exports.postReview = async (req, res, next) => {
   try {
     const review = await insertReview(req.body);
+    console.log(review, "<<<<");
     res.status(201).send({ review });
   } catch (err) {
     next(err);
