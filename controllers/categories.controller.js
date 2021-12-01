@@ -1,4 +1,9 @@
-const { selectCategories } = require("../models/categories.models");
+const {
+  selectCategories,
+  postCategory,
+} = require("../models/categories.models");
+
+//-------------------------------------------------------------
 
 exports.fetchCategories = async (req, res, next) => {
   try {
@@ -10,10 +15,23 @@ exports.fetchCategories = async (req, res, next) => {
   }
 };
 
-// exports.funcNme = async (req, res, next) => {
-//     try {
+//-------------------------------------------------------------
 
-//     } catch (err) {
-//         next(err)
-//     }
+exports.addCategory = async (req, res, next) => {
+  try {
+    const category = await postCategory(req.body);
+
+    res.status(201).send({ category });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//-------------------------------------------------------------
+
+// exports.funcNme = async (req, res, next) => {
+//   try {
+//   } catch (err) {
+//     next(err);
+//   }
 // };

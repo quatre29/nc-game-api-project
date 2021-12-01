@@ -3,6 +3,7 @@ const {
   patchReview,
   getAllReviews,
   insertReview,
+  deleteReview,
 } = require("../models/reviews.models");
 
 const { checkIfRowExists } = require("../utils/check");
@@ -68,6 +69,20 @@ exports.postReview = async (req, res, next) => {
     const review = await insertReview(req.body);
     console.log(review, "<<<<");
     res.status(201).send({ review });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//-------------------------------------------------------------
+
+exports.removeReview = async (req, res, next) => {
+  const { review_id } = req.params;
+
+  try {
+    await deleteReview(review_id);
+
+    res.status(204).json({ msg: "review deleted!" });
   } catch (err) {
     next(err);
   }

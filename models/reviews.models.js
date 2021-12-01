@@ -143,3 +143,7 @@ exports.insertReview = async (body) => {
 
   return review.rows[0];
 };
+
+//-------------------------------------------------------------
+
+exports.deleteReview = async (review_id) => {};

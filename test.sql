@@ -16,4 +16,4 @@
 -- -- WHERE reviews.review_id = comments.review_id
 -- GROUP BY reviews.review_id;
 
-SELECT reviews.owner, title FROM reviews WHERE review_id = 14;
+SELECT * FROM categories;

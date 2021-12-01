@@ -7,6 +7,11 @@ exports.handleCustomErrors = (err, req, res, next) => {
 exports.handlePsqlErrors = (err, req, res, next) => {
   if (err.code === "22P02") {
     res.status(400).send({ msg: "Invalid input" });
+  }
+  if (err.code === "23505") {
+    res
+      .status(400)
+      .send({ msg: "you cannot have duplicate values in unique columns!" });
   } else next(err);
 };
 
