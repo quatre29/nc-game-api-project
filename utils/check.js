@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-exports.checkIfRowExists = async (id, table) => {
+exports.checkIfRowExists = async (id, table, error = "Not found!") => {
   let table_ref = "";
   let table_name = "";
 
@@ -32,7 +32,7 @@ exports.checkIfRowExists = async (id, table) => {
   if (item.rows.length === 0) {
     return Promise.reject({
       status: 404,
-      msg: "Not found!",
+      msg: error,
     });
   }
 };

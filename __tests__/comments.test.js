@@ -44,6 +44,7 @@ describe("GET /api/reviews/:review_id/comments", () => {
     expect(body.comments).toHaveLength(1);
     expect(body.comments[0].body).toBe("I didn't know dogs could play games");
   });
+  gi;
 });
 
 //-------------------------------------------------------------

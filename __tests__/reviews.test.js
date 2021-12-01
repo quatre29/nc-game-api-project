@@ -203,3 +203,50 @@ describe("GET /api/reviews/:review_id/comments", () => {
     expect(body.msg).toBe("Invalid input");
   });
 });
+
+//-------------------------------------------------------------
+
+describe("POST /api/reviews", () => {
+  it("201: when creating a new review", async () => {
+    const reviewBody = {
+      owner: "dav3rid",
+      title: "Awesome game",
+      review_body:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+      designer: "Akihisa Okui",
+      category: "euro game",
+    };
+    const { body } = await request(app)
+      .post("/api/reviews")
+      .send(reviewBody)
+      .expect(201);
+
+    console.log(body, "test");
+
+    // expect(body.review).toEqual(
+    //   expect.objectContaining({
+    //     review_id: expect.any(Number),
+    //     votes: 0,
+    //     created_at: expect.any(Date),
+    //     comment_count: 0,
+    //   })
+    // );
+  });
+
+  it("404: when creating a new review with user that not exists", async () => {
+    const reviewBody = {
+      owner: "quatre29",
+      title: "Awesome game",
+      review_body:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+      designer: "Akihisa Okui",
+      category: "euro game",
+    };
+    const { body } = await request(app)
+      .post("/api/reviews")
+      .send(reviewBody)
+      .expect(404);
+
+    expect(body.msg).toBe("User quatre29 does not exist, please register!");
+  });
+});

@@ -2,6 +2,7 @@ const {
   selectReviewById,
   patchReview,
   getAllReviews,
+  insertReview,
 } = require("../models/reviews.models");
 
 const { checkIfRowExists } = require("../utils/check");
@@ -54,6 +55,17 @@ exports.updateReview = async (req, res, next) => {
     await checkIfRowExists(review_id, "reviews");
 
     const review = await patchReview(inc_votes, review_id);
+    res.status(201).send({ review });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//-------------------------------------------------------------
+
+exports.postReview = async (req, res, next) => {
+  try {
+    const review = await insertReview(req.body);
     res.status(201).send({ review });
   } catch (err) {
     next(err);

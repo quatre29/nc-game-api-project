@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { checkIfRowExists } = require("../utils/check");
 const { rejectQuery } = require("../utils/query");
 
 //-------------------------------------------------------------
@@ -109,3 +110,28 @@ exports.patchReview = async (inc_votes, review_id) => {
 };
 
 //-------------------------------------------------------------
+
+exports.insertReview = async (body) => {
+  await checkIfRowExists(
+    body.owner,
+    "users",
+    `user ${body.owner} does not exist, please register!`
+  );
+
+  const review = await db.query(
+    `
+    INSERT INTO reviews
+    (
+      owner, title, review_body, designer, category
+    )
+    VALUES
+    (
+      $1, $2, $3, $4, $5
+    )
+    RETURNING *;
+  `,
+    [body.owner, body.title, body.review_body, body.designer, body.category]
+  );
+
+  return review.rows[0];
+};
