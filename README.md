@@ -66,15 +66,7 @@ You can use this command to install everything automatically
 npm install
 ```
 
-## 3. Seed DB
-
-Firstly we need to set up the database, this is the step where we create our two databases, one for `test` and the other for `production`
-
-```bash
-npm run setup-dbs
-```
-
-## 4. Set up environment variables
+## 3. Set up environment variables
 
 In order to have access to different databases for `development` and for `testing` you will need to create two separate files and insert `PGDATABASE` env variable
 
@@ -88,4 +80,26 @@ PGDATABASE=nc_games_test
 
 ```bash
 PGDATABASE=nc_games
+```
+
+## 4. Seed DB
+
+Firstly we need to set up the database, this is the step where we create our two databases, one for `test` and the other for `production`
+
+```bash
+npm run setup-dbs
+```
+
+## 5. Testing
+
+To test the endpoints you can test all the existing files using this command in your terminal
+
+```bash
+npm test
+```
+
+or if you want to test each file individually
+
+```bash
+npm test <filename>
 ```
