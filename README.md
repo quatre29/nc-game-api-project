@@ -2,15 +2,21 @@
 
 ## Description of the api
 
-The purpose of the API is to access games data. We would be able to:
+The purpose of the API is to access games data. You would be able to:
 
-- get `reviews` of games
-- get `comments` from reviews
-- get all `users` data
+- get `reviews` of the games you're interested in
+- read `comments` from reviews
+- access all `users` data
+- add comments to reviews
+- delete comments
+- create new reviews
+- delete reviews
 - Vote for `reviews`
 - Vote for `comments`
 
   - you can decrement `votes` on `reviews` and `comments`
+
+More information about all the endpoints and examples of their responses can be found - [HERE](https://nc-games-api-project.herokuapp.com/api/)
 
 **Endpoints of the api**
 
@@ -64,4 +70,18 @@ Firstly we need to set up the database, this is the step where we create our two
 npm run setup-dbs
 ```
 
-## 4.
+## 4. Set up environment variables
+
+In order to have access to different databases for `development` and for `testing` you will need to create two separate files and insert `PGDATABASE` env variable
+
+- `.env.test`
+
+```bash
+PGDATABASE=nc_games_test
+```
+
+- `.env.development`
+
+```bash
+PGDATABASE=nc_games
+```
