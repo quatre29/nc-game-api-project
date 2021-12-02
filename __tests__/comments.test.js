@@ -76,7 +76,18 @@ describe("POST /api/reviews/:review_id/comments", () => {
       .expect(400)
       .send(commentBody);
 
-    expect(body.msg).toBe("Bad request!");
+    expect(body.msg).toBe("Bad request, missing properties from the body!");
+  });
+
+  it("400: missing properties", async () => {
+    const commentBody = { username: "bainesface" };
+
+    const { body } = await request(app)
+      .post("/api/reviews/4/comments")
+      .expect(400)
+      .send(commentBody);
+
+    expect(body.msg).toEqual("Bad request, missing properties from the body!");
   });
 
   it("404: not found when review id does not exist", async () => {
@@ -107,7 +118,6 @@ describe("POST /api/reviews/:review_id/comments", () => {
 describe("DEL /api/comments/:comment_id", () => {
   it("204: when removing a comment", async () => {
     const { body } = await request(app).delete("/api/comments/3").expect(204);
-    console.log(body, "test");
   });
 
   it("404: when comment id does not exist", async () => {

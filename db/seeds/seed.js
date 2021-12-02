@@ -1,5 +1,6 @@
 const db = require("../connection");
 const format = require("pg-format");
+const slugify = require("../../utils/slugify");
 
 const seed = async ({ categoryData, commentData, reviewData, userData }) => {
   await db.query(`DROP TABLE IF EXISTS comments`);
@@ -10,41 +11,41 @@ const seed = async ({ categoryData, commentData, reviewData, userData }) => {
   // 1. create tables
   await db.query(`
   CREATE TABLE categories (
-    slug VARCHAR(30) PRIMARY KEY UNIQUE,
-    description TEXT
+    slug VARCHAR(30) PRIMARY KEY UNIQUE NOT NULL,
+    description TEXT NOT NULL
   );
   `);
 
   await db.query(`
     CREATE TABLE users (
-      username VARCHAR(30) UNIQUE PRIMARY KEY,
+      username VARCHAR(30) UNIQUE PRIMARY KEY  NOT NULL,
       avatar_url VARCHAR(255),
-      name VARCHAR(100)
+      name VARCHAR(100)  NOT NULL
     );
   `);
 
   await db.query(`
     CREATE TABLE reviews (
       review_id SERIAL PRIMARY KEY,
-      title VARCHAR(255),
-      review_body TEXT,
-      designer VARCHAR(1000),
-      review_img_url VARCHAR(255) DEFAULT 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg',
-      votes INT DEFAULT 0,
+      title VARCHAR(255) NOT NULL,
+      review_body TEXT NOT NULL,
+      designer VARCHAR(1000) NOT NULL,
+      review_img_url VARCHAR(255)  NOT NULL DEFAULT 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg',
+      votes INT DEFAULT 0  NOT NULL,
       category VARCHAR(100) REFERENCES categories(slug) NOT NULL,
-      owner VARCHAR(100),
+      owner VARCHAR(100)  NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
 
   await db.query(`
     CREATE TABLE comments (
-      comment_id SERIAL PRIMARY KEY,
+      comment_id SERIAL PRIMARY KEY  NOT NULL,
       author VARCHAR(30) REFERENCES users(username) NOT NULL,
       review_id INT REFERENCES reviews(review_id) ON DELETE CASCADE NOT NULL,
-      votes INT DEFAULT 0,
+      votes INT  NOT NULL DEFAULT 0,
       created_at TIMESTAMP NOT NULL,
-      body TEXT
+      body TEXT  NOT NULL
     );
   `);
   // 2. insert data
@@ -56,7 +57,11 @@ const seed = async ({ categoryData, commentData, reviewData, userData }) => {
     %L
     RETURNING slug, description;
   `,
-    categoryData.map(({ slug, description }) => [slug, description])
+    categoryData.map(({ slug, description }) => {
+      const slugified = slugify(slug);
+      // return [slug, description];
+      return [slugified, description];
+    })
   );
 
   const insertUsers = format(
@@ -101,16 +106,20 @@ const seed = async ({ categoryData, commentData, reviewData, userData }) => {
         category,
         owner,
         created_at,
-      }) => [
-        title,
-        review_body,
-        designer,
-        review_img_url,
-        votes,
-        category,
-        owner,
-        created_at,
-      ]
+      }) => {
+        const slugified = slugify(category);
+
+        return [
+          title,
+          review_body,
+          designer,
+          review_img_url,
+          votes,
+          slugified,
+          owner,
+          created_at,
+        ];
+      }
     )
   );
 

@@ -1,6 +1,7 @@
 const db = require("../db/connection");
 const { checkIfRowExists } = require("../utils/check");
 const { rejectQuery } = require("../utils/query");
+const slugify = require("../utils/slugify");
 
 //-------------------------------------------------------------
 
@@ -112,19 +113,21 @@ exports.patchReview = async (inc_votes, review_id) => {
 //-------------------------------------------------------------
 
 exports.insertReview = async (body) => {
-  const checkUser = await checkIfRowExists(
+  const slugified = slugify(body.category);
+
+  const checkUser = checkIfRowExists(
     body.owner,
     "users",
     `user '${body.owner}' does not exist, please register!`
   );
 
-  const checkCategory = await checkIfRowExists(
-    body.category,
+  const checkCategory = checkIfRowExists(
+    slugified,
     "categories",
     `category '${body.category}' does not exist, please choose the correct one!`
   );
 
-  Promise.all([checkUser, checkCategory]);
+  await Promise.all([checkUser, checkCategory]);
 
   const review = await db.query(
     `
@@ -138,7 +141,7 @@ exports.insertReview = async (body) => {
     )
     RETURNING review_id, votes, created_at;
   `,
-    [body.owner, body.title, body.review_body, body.designer, body.category]
+    [body.owner, body.title, body.review_body, body.designer, slugified]
   );
 
   return review.rows[0];

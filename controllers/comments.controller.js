@@ -31,9 +31,11 @@ exports.postComment = async (req, res, next) => {
   const { body } = req;
   const { review_id } = req.params;
   try {
-    await checkIfRowExists(review_id, "reviews");
+    const [comment] = await Promise.all([
+      insertComment(body, review_id),
+      checkIfRowExists(review_id, "reviews"),
+    ]);
 
-    const comment = await insertComment(body, review_id);
     res.status(201).send({ comment });
   } catch (err) {
     next(err);
@@ -45,8 +47,10 @@ exports.postComment = async (req, res, next) => {
 exports.removeComment = async (req, res, next) => {
   const { comment_id } = req.params;
   try {
-    await checkIfRowExists(comment_id, "comments");
-    await deleteComment(comment_id);
+    await Promise.all([
+      checkIfRowExists(comment_id, "comments"),
+      deleteComment(comment_id),
+    ]);
 
     res.status(204).json({ msg: "no content" });
   } catch (err) {
@@ -61,9 +65,11 @@ exports.voteComment = async (req, res, next) => {
   const { comment_id } = req.params;
 
   try {
-    await checkIfRowExists(comment_id, "comments");
+    const [comment] = await Promise.all([
+      patchComment(inc_votes, comment_id),
+      checkIfRowExists(comment_id, "comments"),
+    ]);
 
-    const comment = await patchComment(inc_votes, comment_id);
     res.status(200).send({ comment });
   } catch (err) {
     next(err);

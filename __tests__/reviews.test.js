@@ -3,6 +3,7 @@ const testData = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
 const request = require("supertest");
 const app = require("../app");
+const slugify = require("../utils/slugify.js");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -32,20 +33,24 @@ describe("GET /api/reviews/:review_id", () => {
       });
   });
 
-  it("400: when id is invalid", () => {
-    return request(app).get("/api/reviews/s2").expect(400);
+  it("400: when id is invalid", async () => {
+    await request(app).get("/api/reviews/s2").expect(400);
+  });
+  it("404: when id is invalid", async () => {
+    const { body } = await request(app).get("/api/reviews/9999").expect(404);
+    expect(body.msg).toBe("review doesn't exist!");
   });
 });
 
 //-------------------------------------------------------------
 
 describe("PATCH /api/reviews/:review_id", () => {
-  it("201: updates reviews votes by increasing number", () => {
+  it("200: updates reviews votes by increasing number", () => {
     const body = { inc_votes: 5 };
     return request(app)
       .patch("/api/reviews/3")
       .send(body)
-      .expect(201)
+      .expect(200)
       .then(({ body }) => {
         expect(body.review).toEqual(
           expect.objectContaining({
@@ -55,12 +60,12 @@ describe("PATCH /api/reviews/:review_id", () => {
       });
   });
 
-  it("201: updates review votes by decrementing number", () => {
+  it("200: updates review votes by decrementing number", () => {
     const body = { inc_votes: -100 };
     return request(app)
       .patch("/api/reviews/3")
       .send(body)
-      .expect(201)
+      .expect(200)
       .then(({ body }) => {
         expect(body.review).toEqual(
           expect.objectContaining({
@@ -88,6 +93,17 @@ describe("PATCH /api/reviews/:review_id", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Not found!");
+      });
+  });
+
+  it("400: when review_id is the wrong type", () => {
+    const body = { inc_votes: 5 };
+    return request(app)
+      .patch("/api/reviews/sdaw")
+      .send(body)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
       });
   });
 });

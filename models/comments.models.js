@@ -19,8 +19,8 @@ exports.selectCommentsByReviewId = async (review_id, page = 1, limit = 10) => {
 //-------------------------------------------------------------
 
 exports.insertComment = async (body, review_id) => {
-  if (!body.username && !body.body) {
-    return rejectQuery();
+  if (!body.username || !body.body) {
+    return rejectQuery("Bad request, missing properties from the body!", 400);
   }
 
   await checkIfRowExists(body.username, "users");

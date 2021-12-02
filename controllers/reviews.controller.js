@@ -42,7 +42,10 @@ exports.fetchReviewById = async (req, res, next) => {
   try {
     const { review_id } = req.params;
 
-    const review = await selectReviewById(review_id);
+    const [review] = await Promise.all([
+      selectReviewById(review_id),
+      checkIfRowExists(review_id, "reviews", "review doesn't exist!"),
+    ]);
 
     res.status(200).send({ review });
   } catch (err) {
@@ -60,7 +63,7 @@ exports.updateReview = async (req, res, next) => {
     await checkIfRowExists(review_id, "reviews");
 
     const review = await patchReview(inc_votes, review_id);
-    res.status(201).send({ review });
+    res.status(200).send({ review });
   } catch (err) {
     next(err);
   }
