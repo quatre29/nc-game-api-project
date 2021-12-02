@@ -137,7 +137,7 @@ describe("PATCH /api/comments/:comments_id", () => {
   it("201: updates comments votes by increasing number", () => {
     const body = { inc_votes: 5 };
     return request(app)
-      .patch("/api/comments/2")
+      .patch("/api/comments/2/vote")
       .send(body)
       .expect(200)
       .then(({ body }) => {
@@ -152,7 +152,7 @@ describe("PATCH /api/comments/:comments_id", () => {
   it("201: updates comment votes by decrementing number", () => {
     const body = { inc_votes: -100 };
     return request(app)
-      .patch("/api/comments/2")
+      .patch("/api/comments/2/vote")
       .send(body)
       .expect(200)
       .then(({ body }) => {
@@ -167,7 +167,7 @@ describe("PATCH /api/comments/:comments_id", () => {
   it("400: increment with something else than a number", () => {
     const body = { inc_votes: "s" };
     return request(app)
-      .patch("/api/comments/s")
+      .patch("/api/comments/s/vote")
       .send(body)
       .expect(400)
       .then(({ body }) => {
@@ -177,7 +177,7 @@ describe("PATCH /api/comments/:comments_id", () => {
   it("404: when comment_id is not found", () => {
     const body = { inc_votes: 5 };
     return request(app)
-      .patch("/api/comments/2222")
+      .patch("/api/comments/2222/vote")
       .send(body)
       .expect(404)
       .then(({ body }) => {

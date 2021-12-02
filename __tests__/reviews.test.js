@@ -45,10 +45,20 @@ describe("GET /api/reviews/:review_id", () => {
 //-------------------------------------------------------------
 
 describe("PATCH /api/reviews/:review_id", () => {
+  it("200: when successfully updating a review", () => {
+    const reviewUpdates = {
+      title: "This is a brand new title",
+    };
+  });
+});
+
+//-------------------------------------------------------------
+
+describe("PATCH /api/reviews/:review_id/vote", () => {
   it("200: updates reviews votes by increasing number", () => {
     const body = { inc_votes: 5 };
     return request(app)
-      .patch("/api/reviews/3")
+      .patch("/api/reviews/3/vote")
       .send(body)
       .expect(200)
       .then(({ body }) => {
@@ -63,7 +73,7 @@ describe("PATCH /api/reviews/:review_id", () => {
   it("200: updates review votes by decrementing number", () => {
     const body = { inc_votes: -100 };
     return request(app)
-      .patch("/api/reviews/3")
+      .patch("/api/reviews/3/vote")
       .send(body)
       .expect(200)
       .then(({ body }) => {
@@ -78,7 +88,7 @@ describe("PATCH /api/reviews/:review_id", () => {
   it("400: increment with something else than a number", () => {
     const body = { inc_votes: "s" };
     return request(app)
-      .patch("/api/reviews/3")
+      .patch("/api/reviews/3/vote")
       .send(body)
       .expect(400)
       .then(({ body }) => {
@@ -88,7 +98,7 @@ describe("PATCH /api/reviews/:review_id", () => {
   it("404: when review_id is not found", () => {
     const body = { inc_votes: 5 };
     return request(app)
-      .patch("/api/reviews/2222")
+      .patch("/api/reviews/2222/vote")
       .send(body)
       .expect(404)
       .then(({ body }) => {
@@ -99,7 +109,7 @@ describe("PATCH /api/reviews/:review_id", () => {
   it("400: when review_id is the wrong type", () => {
     const body = { inc_votes: 5 };
     return request(app)
-      .patch("/api/reviews/sdaw")
+      .patch("/api/reviews/sdaw/vote")
       .send(body)
       .expect(400)
       .then(({ body }) => {

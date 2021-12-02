@@ -1,10 +1,11 @@
 const express = require("express");
 const {
   fetchReviewById,
-  updateReview,
+  voteReview,
   fetchReviews,
   postReview,
   removeReview,
+  updateReview,
 } = require("../controllers/reviews.controller");
 const {
   getCommentsByReview,
@@ -20,6 +21,8 @@ reviewsRouter
   .get(fetchReviewById)
   .patch(updateReview)
   .delete(removeReview);
+
+reviewsRouter.route("/:review_id/vote").patch(voteReview);
 
 reviewsRouter
   .route("/:review_id/comments")

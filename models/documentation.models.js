@@ -22,8 +22,8 @@ const documentation = {
           {
             review_id: 14,
             title: "Velit tempor ullamco amet ipsum dolor voluptate.",
-            review_body: "Don Keigh",
-            designer:
+            designer: "Don Keigh",
+            review_body:
               "Nostrud anim cupidatat incididunt officia cupidatat magna. Cillum commodo voluptate laboris id ",
             review_img_url:
               "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg",
@@ -43,8 +43,8 @@ const documentation = {
         review: {
           review_id: 3,
           title: "Karma Karma Chameleon",
-          review_body: "Rikki Tahta",
-          designer:
+          designer: "Rikki Tahta",
+          review_body:
             "Try to trick your friends. If you find yourself being dealt the Chamelean card then the aim of the game is simple; blend in...",
           review_img_url:
             "https://images.pexels.com/photos/5350049/pexels-photo-5350049.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
@@ -56,8 +56,8 @@ const documentation = {
         },
       },
     },
-    update_review: {
-      path: "PATCH /api/reviews/:review_id",
+    vote_review: {
+      path: "PATCH /api/reviews/:review_id/vote",
       description:
         "Updates a review vote numbers (increment / decrement) - 1 / -1",
       example_body: { inc_votes: 1 },
@@ -104,8 +104,8 @@ const documentation = {
       description: "it will delete an existing comment",
     },
 
-    update_comment: {
-      path: "PATCH /api/comments/:comment_id",
+    vote_comment: {
+      path: "PATCH /api/comments/:comment_id/vote",
       description: "you can vote for comment increment/ decrement",
       example_body: { inc_votes: -1 },
     },

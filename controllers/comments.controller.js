@@ -2,7 +2,7 @@ const {
   selectCommentsByReviewId,
   insertComment,
   deleteComment,
-  patchComment,
+  patchVoteComment,
 } = require("../models/comments.models");
 const { checkIfRowExists } = require("../utils/check");
 
@@ -66,7 +66,7 @@ exports.voteComment = async (req, res, next) => {
 
   try {
     const [comment] = await Promise.all([
-      patchComment(inc_votes, comment_id),
+      patchVoteComment(inc_votes, comment_id),
       checkIfRowExists(comment_id, "comments"),
     ]);
 

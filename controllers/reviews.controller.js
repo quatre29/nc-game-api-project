@@ -1,6 +1,6 @@
 const {
   selectReviewById,
-  patchReview,
+  patchVoteReview,
   getAllReviews,
   insertReview,
   deleteReview,
@@ -55,14 +55,14 @@ exports.fetchReviewById = async (req, res, next) => {
 
 //-------------------------------------------------------------
 
-exports.updateReview = async (req, res, next) => {
+exports.voteReview = async (req, res, next) => {
   try {
     const { inc_votes } = req.body;
     const { review_id } = req.params;
 
     await checkIfRowExists(review_id, "reviews");
 
-    const review = await patchReview(inc_votes, review_id);
+    const review = await patchVoteReview(inc_votes, review_id);
     res.status(200).send({ review });
   } catch (err) {
     next(err);
@@ -89,6 +89,23 @@ exports.removeReview = async (req, res, next) => {
     await deleteReview(review_id);
 
     res.sendStatus(204);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//-------------------------------------------------------------
+
+exports.updateReview = async (req, res, next) => {
+  const { review_id } = req.params;
+  const body = req.body;
+  try {
+    const [review] = await Promise.all([
+      patchReview(review_id, body),
+      checkIfRowExists(review_id, "reviews", "review not found!"),
+    ]);
+
+    res.status(200).send({ review });
   } catch (err) {
     next(err);
   }

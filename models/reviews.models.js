@@ -96,7 +96,11 @@ exports.selectReviewById = async (review_id) => {
 
 //-------------------------------------------------------------
 
-exports.patchReview = async (inc_votes, review_id) => {
+exports.patchReview = async (review_id) => {};
+
+//-------------------------------------------------------------
+
+exports.patchVoteReview = async (inc_votes, review_id) => {
   const review = await db.query(
     `
         UPDATE reviews

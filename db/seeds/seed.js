@@ -94,7 +94,7 @@ const seed = async ({ categoryData, commentData, reviewData, userData }) => {
     )
     VALUES
     %L
-    RETURNING title, review_body, designer, review_img_url, votes, category, owner, created_at;
+    RETURNING title, designer, review_body , review_img_url, votes, category, owner, created_at;
   `,
     reviewData.map(
       ({

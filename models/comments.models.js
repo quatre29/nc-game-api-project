@@ -60,7 +60,7 @@ exports.deleteComment = async (comment_id) => {
 
 //-------------------------------------------------------------
 
-exports.patchComment = async (inc_votes, comment_id) => {
+exports.patchVoteComment = async (inc_votes, comment_id) => {
   const comment = await db.query(
     `
         UPDATE comments
