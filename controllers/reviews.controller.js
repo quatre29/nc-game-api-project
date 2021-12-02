@@ -7,6 +7,7 @@ const {
 } = require("../models/reviews.models");
 
 const { checkIfRowExists } = require("../utils/check");
+const { getTotalCountOfTableRows } = require("../utils/query");
 
 //-------------------------------------------------------------
 
@@ -19,14 +20,17 @@ exports.fetchReviews = async (req, res, next) => {
   const limit = queryParams["limit"];
 
   try {
-    const reviews = await getAllReviews(
+    const counting = getTotalCountOfTableRows("reviews");
+    const gettingReviews = getAllReviews(
       sort_by,
       sort_order,
       category,
       page,
       limit
     );
-    res.status(200).send({ reviews, total_count: 0 });
+
+    const [totalCount, reviews] = await Promise.all([counting, gettingReviews]);
+    res.status(200).send({ reviews, total_count: totalCount });
   } catch (err) {
     next(err);
   }
