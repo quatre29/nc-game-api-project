@@ -16,7 +16,11 @@ The purpose of the API is to access games data. You would be able to:
 
   - you can decrement `votes` on `reviews` and `comments`
 
-More information about all the endpoints and examples of their responses can be found - [HERE](https://nc-games-api-project.herokuapp.com/api/)
+---
+
+> More information about all the endpoints and examples of their responses can be found - [HERE](https://nc-games-api-project.herokuapp.com/api/)
+
+---
 
 **Endpoints of the api**
 
