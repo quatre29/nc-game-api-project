@@ -60,6 +60,19 @@ exports.deleteComment = async (comment_id) => {
 
 //-------------------------------------------------------------
 
+exports.patchComment = async (comment_id, body) => {
+  const comment = await db.query(
+    `
+    UPDATE comments
+    SET body = $1
+    WHERE comment_id = $2
+  `,
+    [comment_id, body]
+  );
+
+  return comment.rows[0];
+};
+
 exports.patchVoteComment = async (inc_votes, comment_id) => {
   const comment = await db.query(
     `

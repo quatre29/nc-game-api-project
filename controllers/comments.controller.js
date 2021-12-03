@@ -3,6 +3,7 @@ const {
   insertComment,
   deleteComment,
   patchVoteComment,
+  patchComment,
 } = require("../models/comments.models");
 const { checkIfRowExists } = require("../utils/check");
 
@@ -37,6 +38,24 @@ exports.postComment = async (req, res, next) => {
     ]);
 
     res.status(201).send({ comment });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//-------------------------------------------------------------
+
+exports.updateComment = async (req, res, next) => {
+  const { comment_id } = req.params;
+  const body = req.body;
+  try {
+    const [comment] = await Promise.all([
+      patchComment(comment_id, body),
+      checkIfRowExists(comment_id, "comments", "comment not found!"),
+    ]);
+    console.log(comment);
+
+    res.status(200).send({ comment });
   } catch (err) {
     next(err);
   }
