@@ -190,21 +190,22 @@ describe("PATCH /api/comments/:comments_id/vote", () => {
 
 describe("PATCH /api/comments/:comments_id/", () => {
   it("200: when updating comment's body ", async () => {
-    // const commentBody = {
-    //   body: "this is an updated comment",
-    // };
-    // const { body } = await request(app)
-    //   .patch("/api/comments/2")
-    //   .send(commentBody)
-    //   .expect(200);
-    // expect(body.comment).toEqual(
-    //   expect.objectContaining({
-    //     body: "this is an updated comment",
-    //     comment_id: 2,
-    //     votes: expect.any(Number),
-    //     author: expect.any(String),
-    //   })
-    // );
+    const commentBody = {
+      body: "this is an updated comment",
+    };
+    const { body } = await request(app)
+      .patch("/api/comments/2")
+      .send(commentBody)
+      .expect(200);
+
+    expect(body.comment).toEqual(
+      expect.objectContaining({
+        body: "this is an updated comment",
+        comment_id: 2,
+        votes: expect.any(Number),
+        author: expect.any(String),
+      })
+    );
   });
 });
 

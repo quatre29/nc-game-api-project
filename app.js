@@ -13,7 +13,7 @@ app.use(express.json());
 app.use("/api", apiRouter);
 
 app.use("/", (req, res) => {
-  res.status(200).send({ msg: "Welcome to games API homepage!..." });
+  res.status(200).send({ msg: "Welcome to games API homepage!" });
 });
 
 app.all("*", (req, res) => {

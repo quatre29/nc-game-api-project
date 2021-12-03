@@ -47,13 +47,12 @@ exports.postComment = async (req, res, next) => {
 
 exports.updateComment = async (req, res, next) => {
   const { comment_id } = req.params;
-  const body = req.body;
+  const { body } = req.body;
   try {
     const [comment] = await Promise.all([
       patchComment(comment_id, body),
       checkIfRowExists(comment_id, "comments", "comment not found!"),
     ]);
-    console.log(comment);
 
     res.status(200).send({ comment });
   } catch (err) {

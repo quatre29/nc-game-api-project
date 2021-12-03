@@ -66,8 +66,9 @@ exports.patchComment = async (comment_id, body) => {
     UPDATE comments
     SET body = $1
     WHERE comment_id = $2
-  `,
-    [comment_id, body]
+    RETURNING *;
+    `,
+    [body, comment_id]
   );
 
   return comment.rows[0];
