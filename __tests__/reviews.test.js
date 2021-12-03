@@ -45,10 +45,30 @@ describe("GET /api/reviews/:review_id", () => {
 //-------------------------------------------------------------
 
 describe("PATCH /api/reviews/:review_id", () => {
-  it("200: when successfully updating a review", () => {
+  it("200: when successfully updating a review", async () => {
     const reviewUpdates = {
       title: "This is a brand new title",
+      designer: "Adrian Nll",
+      review_img_url: "https://fakeurl.img",
+      category: "dexterity",
     };
+
+    const { body } = await request(app)
+      .patch("/api/reviews/2")
+      .send(reviewUpdates)
+      .expect(200);
+
+    expect(body.review).toEqual(
+      expect.objectContaining({
+        title: "This is a brand new title",
+        designer: "Adrian Nll",
+        review_img_url: "https://fakeurl.img",
+        category: "dexterity",
+        owner: expect.any(String),
+        review_id: expect.any(Number),
+        votes: expect.any(Number),
+      })
+    );
   });
 });
 

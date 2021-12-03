@@ -99,8 +99,8 @@ const seed = async ({ categoryData, commentData, reviewData, userData }) => {
     reviewData.map(
       ({
         title,
-        review_body,
         designer,
+        review_body,
         review_img_url,
         votes,
         category,
@@ -111,8 +111,8 @@ const seed = async ({ categoryData, commentData, reviewData, userData }) => {
 
         return [
           title,
-          review_body,
           designer,
+          review_body,
           review_img_url,
           votes,
           slugified,

@@ -4,6 +4,7 @@ const {
   getAllReviews,
   insertReview,
   deleteReview,
+  patchReview,
 } = require("../models/reviews.models");
 
 const { checkIfRowExists } = require("../utils/check");
@@ -102,7 +103,7 @@ exports.updateReview = async (req, res, next) => {
   try {
     const [review] = await Promise.all([
       patchReview(review_id, body),
-      checkIfRowExists(review_id, "reviews", "review not found!"),
+      // checkIfRowExists(review_id, "reviews", "review not found!"),
     ]);
 
     res.status(200).send({ review });
