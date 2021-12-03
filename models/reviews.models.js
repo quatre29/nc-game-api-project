@@ -97,58 +97,54 @@ exports.selectReviewById = async (review_id) => {
 //-------------------------------------------------------------
 
 exports.patchReview = async (review_id, body) => {
-  // const obj = {
-  //   title: "",
-  //   review_body: "",
-  //   designer: "",
-  //   review_img_url: "",
-  //   category: "",
-  // };
-  // // let title = "";
-  // // let reviewBody = "";
-  // // let designer = "";
-  // // let imgUrl = "";
-  // // let category = "";
-  // //needs $$$ in order for obj
-  // if (body.title) obj["title"] = `title = $`;
-  // if (body.review_body) obj["review_body"] = `, review_body = $`;
-  // if (body.designer) obj["designer"] = `, designer = $`;
-  // if (body.review_img_url) obj["review_img_url"] = `, review_img_url = $`;
-  // if (body.category) obj["category"] = `, category = $`;
-  // let replacement$ = 1;
-  // Object.keys(obj).forEach((key) => {
-  //   if (body[key]) {
-  //     replacement$++;
-  //     obj[key] = obj[key] + `${replacement$}`;
-  //   }
-  // });
-  // console.log(obj, "<<<<<<<<<<<<<<<<<");
-  // const review = await db.query(
-  //   `
-  //   UPDATE reviews
-  //   SET ${obj.title} ${obj.review_body} ${obj.designer} ${obj.review_img_url} ${obj.category}
-  //   WHERE review_id = $1
-  //   RETURNING *;
-  // `,
-  //   [
-  //     review_id,
-  //     ...Object.keys(obj).map((key) => {
-  //       if (body[key]) {
-  //         console.log(obj[key]);
-  //         return obj[key];
-  //       }
-  //     }),
-  //   ]
-  //   // [
-  //   //   review_id,
-  //   //   body.title,
-  //   //   body.review_body,
-  //   //   body.designer,
-  //   //   body.review_img_url,
-  //   //   body.category,
-  //   // ]
-  // );
-  // return review.rows[0];
+  const obj = {
+    title: "",
+    review_body: "",
+    designer: "",
+    review_img_url: "",
+    category: "",
+  };
+
+  //needs $$$ in order for obj
+  if (body.title) obj["title"] = `title = $`;
+  if (body.review_body) obj["review_body"] = `, review_body = $`;
+  if (body.designer) obj["designer"] = `, designer = $`;
+  if (body.review_img_url) obj["review_img_url"] = `, review_img_url = $`;
+  if (body.category) obj["category"] = `, category = $`;
+  let replacement$ = 1;
+  Object.keys(obj).forEach((key) => {
+    if (body[key]) {
+      replacement$++;
+      obj[key] = obj[key] + `${replacement$}`;
+    }
+  });
+  console.log(obj, "<<<<<<<<<<<<<<<<<");
+  const review = await db.query(
+    `
+    UPDATE reviews
+    SET ${obj.title} ${obj.review_body} ${obj.designer} ${obj.review_img_url} ${obj.category}
+    WHERE review_id = $1
+    RETURNING *;
+  `,
+    [
+      review_id,
+      ...Object.keys(body).map((key) => {
+        if (obj[key]) {
+          console.log(obj[key]);
+          return body[key];
+        }
+      }),
+    ]
+    // [
+    //   review_id,
+    //   body.title,
+    //   body.review_body,
+    //   body.designer,
+    //   body.review_img_url,
+    //   body.category,
+    // ]
+  );
+  return review.rows[0];
 };
 
 //-------------------------------------------------------------
