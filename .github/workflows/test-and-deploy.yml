@@ -16,7 +16,21 @@ jobs:
     steps:
       - name: Checkout and clone repo
         uses: actions/checkout@v2
+
+      - name: Setup postgresql
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql db: test_db
+          postgresql user: qtr
+          postgresql password: qqqq
+
       - name: Install dependencies
         run: npm install
       - name: Test categories
-        run: npm test categories.test.js
+        run: PGDATABASE=test_db PGUSER=qtr PGPASSWORD=qqqq npm test categories.test.js
+      - name: Test reviews
+        run: PGDATABASE=test_db PGUSER=qtr PGPASSWORD=qqqq npm test reviews.test.js
+      - name: Test comments
+        run: PGDATABASE=test_db PGUSER=qtr PGPASSWORD=qqqq npm test comments.test.js
+      - name: Test users
+        run: PGDATABASE=test_db PGUSER=qtr PGPASSWORD=qqqq npm test users.test.js
