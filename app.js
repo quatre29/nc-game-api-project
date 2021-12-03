@@ -12,6 +12,10 @@ const app = express();
 app.use(express.json());
 app.use("/api", apiRouter);
 
+app.use("/", (req, res) => {
+  res.status(200).send({ msg: "Welcome to games API!" });
+});
+
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "Path not found!" });
 });
