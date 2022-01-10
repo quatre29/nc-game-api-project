@@ -16,4 +16,4 @@
 -- -- WHERE reviews.review_id = comments.review_id
 -- GROUP BY reviews.review_id;
 
-SELECT * FROM comments WHERE comment_id = 2;
+SELECT * FROM users WHERE username = 'mallionaire';

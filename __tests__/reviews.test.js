@@ -44,7 +44,7 @@ describe("GET /api/reviews/:review_id", () => {
 
 //-------------------------------------------------------------
 
-describe("PATCH /api/reviews/:review_id", () => {
+describe.only("PATCH /api/reviews/:review_id", () => {
   it("200: when successfully updating a review", async () => {
     const reviewUpdates = {
       title: "This is a brand new title",

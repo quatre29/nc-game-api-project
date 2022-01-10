@@ -49,3 +49,20 @@ describe("GET /api/users/:username", () => {
 });
 
 //-------------------------------------------------------------
+
+describe("PATCH /api/users/:username", () => {
+  it("200: when updating user", async () => {
+    const userInfo = {
+      name: "John",
+    };
+
+    const { body } = await request(app)
+      .patch("/api/users/mallionaire")
+      .send(userInfo)
+      .expect(200);
+
+    console.log(body, "tests");
+  });
+});
+
+//-------------------------------------------------------------
